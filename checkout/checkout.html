@@ -1,0 +1,248 @@
+<!-- Amazon-Style Checkout Overlay -->
+<div id="checkout-overlay" class="checkout-hidden" role="dialog" aria-modal="true" aria-labelledby="checkout-header-title">
+  <div class="checkout-backdrop"></div>
+  <div class="checkout-wrapper">
+    
+    <!-- Minimal Header -->
+    <header class="checkout-navbar">
+      <div class="checkout-brand">
+        <span class="brand-logo">Decode__sriraj</span>
+        <span class="secure-badge"><svg class="lock-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> 100% Secure Payments</span>
+      </div>
+      <button id="close-checkout" class="close-btn" aria-label="Close">&times;</button>
+    </header>
+
+    <div class="checkout-layout">
+      <!-- Left Column: Steps -->
+      <div class="checkout-steps">
+        
+        <!-- STEP 1: Delivery Address -->
+        <div class="step-container active" id="step-1">
+          <div class="step-header">
+            <h3 class="step-title"><span class="step-num">1</span> Delivery Address</h3>
+            <div class="step-summary hidden" id="address-summary">
+              <!-- Injected by JS -->
+            </div>
+            <button class="step-change-btn hidden" id="change-address-btn">Change</button>
+          </div>
+          
+          <div class="step-content" id="address-content">
+            <form id="address-form" novalidate>
+              <div class="form-grid">
+                <div class="form-group full-width">
+                  <label>Full Name</label>
+                  <input type="text" id="cx-name" required placeholder="e.g. Sriraj">
+                  <span class="error-text">Required</span>
+                </div>
+                
+                <div class="form-group full-width">
+                  <label>Mobile Number</label>
+                  <input type="tel" id="cx-phone" required maxlength="10" placeholder="10-digit mobile number">
+                  <span class="error-text">Valid 10-digit number required</span>
+                </div>
+
+                <div class="form-group full-width">
+                  <label>Pincode</label>
+                  <input type="tel" id="cx-pincode" required maxlength="6" placeholder="6 digits (e.g. 560001)">
+                  <span class="error-text">Valid 6-digit pincode required</span>
+                </div>
+
+                <div class="form-group full-width">
+                  <label>Flat, House no., Building, Company, Apartment</label>
+                  <input type="text" id="cx-house" required placeholder="">
+                  <span class="error-text">Required</span>
+                </div>
+
+                <div class="form-group full-width">
+                  <label>Area, Colony, Street, Sector, Village</label>
+                  <input type="text" id="cx-area" required placeholder="">
+                  <span class="error-text">Required</span>
+                </div>
+
+                <div class="form-group">
+                  <label>City / Town</label>
+                  <input type="text" id="cx-city" required>
+                  <span class="error-text">Required</span>
+                </div>
+                
+                <div class="form-group">
+                  <label>District</label>
+                  <input type="text" id="cx-district" required>
+                  <span class="error-text">Required</span>
+                </div>
+
+                <div class="form-group full-width">
+                  <label>State</label>
+                  <select id="cx-state" required>
+                    <option value="">Choose a state</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Manipur">Manipur</option>
+                    <option value="Meghalaya">Meghalaya</option>
+                    <option value="Mizoram">Mizoram</option>
+                    <option value="Nagaland">Nagaland</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Sikkim">Sikkim</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Tripura">Tripura</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="West Bengal">West Bengal</option>
+                  </select>
+                  <span class="error-text">Required</span>
+                </div>
+              </div>
+              
+              <button type="button" id="btn-use-address" class="amazon-btn-primary">Use this address</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- STEP 2: Delivery Option (Static for now) -->
+        <div class="step-container disabled" id="step-2">
+          <div class="step-header">
+            <h3 class="step-title"><span class="step-num">2</span> Delivery Options</h3>
+          </div>
+          <div class="step-content" id="delivery-content">
+             <div class="delivery-selection selected">
+               <div class="radio-circle checked"></div>
+               <div class="delivery-info">
+                 <span class="delivery-date text-green">Estimated Delivery: 2–5 days</span>
+                 <span class="delivery-type">Standard Free Shipping</span>
+               </div>
+             </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: Payment Method -->
+        <div class="step-container disabled" id="step-3">
+          <div class="step-header">
+            <h3 class="step-title"><span class="step-num">3</span> Payment Method</h3>
+          </div>
+          <div class="step-content" id="payment-content">
+            <div class="payment-methods">
+              
+              <label class="payment-row">
+                <input type="radio" name="payment" value="upi">
+                <span class="payment-label-bold">UPI (Pay via App)</span>
+                <div class="payment-sub-options hidden" id="upi-options">
+                   <p class="sub-text">Choose an app to complete payment:</p>
+                   <div class="upi-chips">
+                     <button type="button" class="upi-chip" data-app="gpay">Google Pay</button>
+                     <button type="button" class="upi-chip" data-app="phonepe">PhonePe</button>
+                     <button type="button" class="upi-chip" data-app="paytm">Paytm</button>
+                   </div>
+                </div>
+              </label>
+
+              <label class="payment-row">
+                <input type="radio" name="payment" value="card">
+                <span class="payment-label-bold">Credit / Debit Card</span>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" class="card-icon">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" class="card-icon">
+              </label>
+
+              <label class="payment-row">
+                <input type="radio" name="payment" value="netbanking">
+                <span class="payment-label-bold">Net Banking</span>
+                <span class="sub-text-inline">All Indian banks</span>
+              </label>
+
+              <label class="payment-row">
+                <input type="radio" name="payment" value="cod">
+                <span class="payment-label-bold">Cash on Delivery / Pay on Delivery</span>
+                <span class="sub-text-inline">Cash, UPI and Cards accepted.</span>
+              </label>
+
+            </div>
+            
+            <button type="button" id="btn-continue-payment" class="amazon-btn-primary" disabled>Continue</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Order Summary -->
+      <div class="checkout-sidebar">
+        <div class="order-summary-box">
+          <h4 class="summary-header">Order Summary</h4>
+          
+          <div class="summary-rows">
+            <div class="row">
+              <span>Items:</span>
+              <span id="summary-items-price">--</span>
+            </div>
+            <div class="row">
+              <span>Delivery:</span>
+              <span class="text-free">FREE</span>
+            </div>
+            <div class="row hidden" id="savings-row">
+              <span>Savings:</span>
+              <span class="text-green" id="summary-savings">--</span>
+            </div>
+            <div class="row total-row">
+              <span>Order Total:</span>
+              <span class="total-amount" id="summary-total">--</span>
+            </div>
+          </div>
+
+          <div class="coupon-box">
+             <input type="text" id="coupon-input" placeholder="Enter Code">
+             <button type="button" id="apply-coupon-btn">Apply</button>
+          </div>
+          <p id="coupon-feedback" class="coupon-msg"></p>
+
+          <div class="items-preview-list" id="items-preview">
+            <!-- Items injected here -->
+          </div>
+
+          <button id="place-order-btn" class="amazon-btn-submit" disabled>Place Your Order</button>
+
+          <p class="legal-text">
+            By placing your order, you agree to Decode__sriraj's <a href="#">privacy notice</a> and <a href="#">conditions of use</a>.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="processing-screen" class="full-screen-loader hidden">
+    <div class="loader-content">
+      <div class="amazon-spinner"></div>
+      <h3>Processing Request...</h3>
+      <p>Please do not press back or refresh.</p>
+    </div>
+  </div>
+
+  <!-- Success Screen -->
+  <div id="success-screen" class="full-screen-loader hidden">
+    <div class="success-card">
+      <div class="checkmark-circle">
+        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/></svg>
+      </div>
+      <h2>Order Placed Successfully!</h2>
+      <p>Thank you for shopping with us.</p>
+      <div class="order-ref">Order ID: <span id="final-order-id"></span></div>
+      <a href="/" class="amazon-btn-primary" onclick="window.location.reload()">Continue Shopping</a>
+    </div>
+  </div>
+
+</div>

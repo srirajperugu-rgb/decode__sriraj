@@ -1,0 +1,13 @@
+{
+  "files": [
+    "/checkout/checkout.html",
+    "/checkout/checkout.css",
+    "/checkout/checkout.js",
+    "/admin/admin-auth.js",
+    "/admin/admin-seed.js",
+    "/admin/admin-panel.html",
+    "/server-stubs/orders-stub.js",
+    "/README_CHECKOUT.md"
+  ],
+  "runStub": "node server-stubs/orders-stub.js"
+}

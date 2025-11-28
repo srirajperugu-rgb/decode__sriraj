@@ -1,0 +1,4 @@
+Neutralization Log:
+- Verified no absolute localhost URLs in client code.
+- Verified no Google Studio preview links.
+- Verified no real payment secrets in source code.

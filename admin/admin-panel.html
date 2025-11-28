@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel | Decode__sriraj</title>
+  <style>
+    body { font-family: sans-serif; background: #0f172a; color: #f8fafc; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+    .card { background: #1e293b; padding: 2rem; border-radius: 8px; width: 100%; max-width: 400px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    h2 { margin-top: 0; text-align: center; color: #3b82f6; }
+    input { width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: #334155; border: 1px solid #475569; color: white; border-radius: 4px; box-sizing: border-box; }
+    button { width: 100%; padding: 0.8rem; background: #3b82f6; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+    button:hover { background: #2563eb; }
+    .hidden { display: none; }
+    #dashboard-view { max-width: 800px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #334155; }
+    th { color: #94a3b8; }
+  </style>
+</head>
+<body>
+
+  <!-- Login Form -->
+  <div id="login-view" class="card">
+    <h2>Admin Login</h2>
+    <form id="login-form">
+      <input type="email" id="email" placeholder="Email Address" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button type="submit">Sign In</button>
+      <p id="error-msg" style="color: #ef4444; text-align: center; margin-top: 1rem; display: none;"></p>
+    </form>
+  </div>
+
+  <!-- Reset Password Form -->
+  <div id="reset-view" class="card hidden">
+    <h2>Security Update</h2>
+    <p style="text-align: center; color: #cbd5e1; font-size: 0.9rem;">Default password detected. Please set a new password.</p>
+    <form id="reset-form">
+      <input type="password" id="new-pass" placeholder="New Password" required minlength="8">
+      <input type="password" id="confirm-pass" placeholder="Confirm Password" required>
+      <button type="submit">Update Password</button>
+    </form>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard-view" class="card hidden" style="max-width: 800px;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h2>Orders Dashboard</h2>
+      <button onclick="logout()" style="width: auto; background: #ef4444; padding: 0.5rem 1rem;">Logout</button>
+    </div>
+    <table>
+      <thead><tr><th>Order ID</th><th>Date</th><th>Total</th><th>Status</th></tr></thead>
+      <tbody id="orders-list"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const API_BASE = '/api'; // Update in production
+    let token = localStorage.getItem('admin_token');
+
+    document.getElementById('login-form').onsubmit = async (e) => {
+      e.preventDefault();
+      const u = document.getElementById('email').value;
+      const p = document.getElementById('password').value;
+      
+      // Call API
+      try {
+        const res = await fetch(`${API_BASE}/login`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ username: u, password: p })
+        });
+        const data = await res.json();
+        
+        if (data.token) {
+          token = data.token;
+          localStorage.setItem('admin_token', token);
+          if (data.needsReset) {
+            document.getElementById('login-view').classList.add('hidden');
+            document.getElementById('reset-view').classList.remove('hidden');
+          } else {
+            showDashboard();
+          }
+        } else {
+          showError(data.error || 'Login failed');
+        }
+      } catch (err) {
+        // Fallback for demo without backend
+        if (u === 'decodesriraj11@gmail.com' && p === '9390095383sriraj') {
+          token = 'demo_token';
+          document.getElementById('login-view').classList.add('hidden');
+          document.getElementById('reset-view').classList.remove('hidden');
+        } else {
+          showError('Connection error or invalid credentials');
+        }
+      }
+    };
+
+    document.getElementById('reset-form').onsubmit = (e) => {
+      e.preventDefault();
+      const p1 = document.getElementById('new-pass').value;
+      const p2 = document.getElementById('confirm-pass').value;
+      if (p1 !== p2) { alert("Passwords do not match"); return; }
+      
+      // Call Reset API...
+      alert("Password updated (Simulation).");
+      showDashboard();
+    };
+
+    function showDashboard() {
+      document.getElementById('login-view').classList.add('hidden');
+      document.getElementById('reset-view').classList.add('hidden');
+      document.getElementById('dashboard-view').classList.remove('hidden');
+      
+      const tbody = document.getElementById('orders-list');
+      tbody.innerHTML = `
+        <tr><td>ORD-99281</td><td>Oct 26, 2023</td><td>₹2,599</td><td>Placed</td></tr>
+        <tr><td>ORD-11029</td><td>Oct 25, 2023</td><td>₹899</td><td>Shipped</td></tr>
+      `;
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('error-msg');
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    function logout() {
+      localStorage.removeItem('admin_token');
+      location.reload();
+    }
+  </script>
+</body>
+</html>
